@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../config.dart';
-import 'storage_service.dart';
 
 class ApiService {
   static int? userId;
@@ -31,25 +30,6 @@ class ApiService {
     } else {
       throw Exception('Failed to create user: ${r.statusCode} ${r.body}');
     }
-  }
-
-  Future<String> sendMessage(String message) async {
-    final userId = await StorageService.getOrCreateUserId();
-
-    final response = await http.post(
-      Uri.parse("$apiBaseUrl/chat"),
-      headers: await _headers(),
-      body: jsonEncode({
-        "user_id": userId,
-        "message": message,
-      }),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception("Chat failed: ${response.statusCode} ${response.body}");
-    }
-
-    return jsonDecode(response.body)['reply'];
   }
 
   static Future<String> chat(String input) async {
