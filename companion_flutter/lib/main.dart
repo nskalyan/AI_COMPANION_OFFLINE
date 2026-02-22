@@ -7,6 +7,8 @@ import 'services/notification_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Init storage (Hive) before any widget can access it
+  await StorageService.init();
   // Init notifications (local + scheduled)
   await NotificationService.init();
 
